@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cm.cmdc.dao.component.usermgmt.mapper.map.RelUserDepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartment">
+    <id column="dept_uuid" jdbcType="VARCHAR" property="deptUuid" />
+    <id column="user_uuid" jdbcType="VARCHAR" property="userUuid" />
+    <result column="user_type" jdbcType="SMALLINT" property="userType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    dept_uuid, user_uuid, user_type
+  </sql>
+  <select id="selectByExample" parameterType="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartmentCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_mgmt.rel_user_department
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartmentKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_mgmt.rel_user_department
+    where dept_uuid = #{deptUuid,jdbcType=VARCHAR}
+      and user_uuid = #{userUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartmentKey">
+    delete from user_mgmt.rel_user_department
+    where dept_uuid = #{deptUuid,jdbcType=VARCHAR}
+      and user_uuid = #{userUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartmentCriteria">
+    delete from user_mgmt.rel_user_department
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartment">
+    insert into user_mgmt.rel_user_department (dept_uuid, user_uuid, user_type
+      )
+    values (#{deptUuid,jdbcType=VARCHAR}, #{userUuid,jdbcType=VARCHAR}, #{userType,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartment">
+    insert into user_mgmt.rel_user_department
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deptUuid != null">
+        dept_uuid,
+      </if>
+      <if test="userUuid != null">
+        user_uuid,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deptUuid != null">
+        #{deptUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="userUuid != null">
+        #{userUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartmentCriteria" resultType="java.lang.Long">
+    select count(*) from user_mgmt.rel_user_department
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update user_mgmt.rel_user_department
+    <set>
+      <if test="record.deptUuid != null">
+        dept_uuid = #{record.deptUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userUuid != null">
+        user_uuid = #{record.userUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userType != null">
+        user_type = #{record.userType,jdbcType=SMALLINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update user_mgmt.rel_user_department
+    set dept_uuid = #{record.deptUuid,jdbcType=VARCHAR},
+      user_uuid = #{record.userUuid,jdbcType=VARCHAR},
+      user_type = #{record.userType,jdbcType=SMALLINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartment">
+    update user_mgmt.rel_user_department
+    <set>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where dept_uuid = #{deptUuid,jdbcType=VARCHAR}
+      and user_uuid = #{userUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartment">
+    update user_mgmt.rel_user_department
+    set user_type = #{userType,jdbcType=SMALLINT}
+    where dept_uuid = #{deptUuid,jdbcType=VARCHAR}
+      and user_uuid = #{userUuid,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.cm.cmdc.dao.component.usermgmt.mapper.entity.RelUserDepartmentCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_mgmt.rel_user_department
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

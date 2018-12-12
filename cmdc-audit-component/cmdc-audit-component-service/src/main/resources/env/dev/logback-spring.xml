@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property scope="context" name="serverPort"
+		value="9020" />
+	<property scope="context" name="componentName"
+		value="cmdc-usermgmt-component" />
+
+
+	<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+	<property name="encoderPattern"
+		value="%d{YY-MM-dd HH:mm:ss.SSS} %-4level %logger{6}.%M[%3L] - %msg %n" />
+        
+<!-- 	<property name="encoderPattern" -->
+<!-- 		value="%d{YY-MM-dd HH:mm:ss.SSS} [%-3thread] %-5level %logger{6}.%M[%3L] - %msg %n" /> -->
+
+<!-- 	<property name="encoderPattern" -->
+<!-- 		value="%d %-4relative AA[%thread] %-5level %logger{6} - %msg %n" /> -->
+
+	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${encoderPattern}</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="APPENDER"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<fileNamePattern>/data/logs/${componentName}-${serverPort}_%d{yyyy-MM-dd}-%i.logger</fileNamePattern>
+			<!--文件最多保留的天数 -->
+			<maxHistory>7</maxHistory>
+			<!--文件最大为多少 -->
+			<maxFileSize>10MB</maxFileSize>
+		</rollingPolicy>
+		<encoder>
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>${encoderPattern}</pattern>
+		</encoder>
+	</appender>
+    
+	<appender name="WRAN_APPENDER"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>/data/logs/warn/${componentName}-${serverPort}_%d{yyyy-MM-dd}-warn-%i.logger
+			</fileNamePattern>
+			<maxHistory>10</maxHistory>
+			<maxFileSize>10MB</maxFileSize>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${encoderPattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+    
+	<appender name="ERROR_APPENDER"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>/data/logs/error/${componentName}-${serverPort}_%d{yyyy-MM-dd}-error-%i.logger
+			</fileNamePattern>
+			<maxHistory>10</maxHistory>
+			<maxFileSize>10MB</maxFileSize>
+		</rollingPolicy>
+		<encoder>
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>${encoderPattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+   
+	
+	
+	<!--设置日志打印级别 -->
+	<logger name="com.cmmc.cmdc" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="APPENDER" />
+		<appender-ref ref="ERROR_APPENDER" />
+	</logger>
+	<!--设置框架日志打印级别 -->
+	
+
+
+	<!-- 去掉 spring boot框架中部分代码的日记级别. -->
+	<logger
+		name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"
+		additivity="false">
+		<level value="WARN" />
+		<appender-ref ref="ERROR_APPENDER" />
+	</logger>
+	<logger
+		name="org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping"
+		additivity="false">
+		<level value="WARN" />
+		<appender-ref ref="ERROR_APPENDER" />
+	</logger>
+	<logger
+		name="org.springframework.jmx.export.annotation.AnnotationMBeanExporter"
+		additivity="false">
+		<level value="WARN" />
+		<appender-ref ref="ERROR_APPENDER" />
+	</logger>
+	<logger
+		name="org.springframework.boot.web.servlet.FilterRegistrationBean"
+		additivity="false">
+		<level value="WARN" />
+		<appender-ref ref="ERROR_APPENDER" />
+	</logger>
+	<logger name="com.netflix.config.sources.URLConfigurationSource"
+		additivity="false">
+		<level value="WARN" />
+		<appender-ref ref="ERROR_APPENDER" />
+	</logger>
+	<logger
+		name="org.springframework.boot.actuate.endpoint.jmx.EndpointMBeanExporter"
+		additivity="false">
+		<level value="WARN" />
+		<appender-ref ref="ERROR_APPENDER" />
+	</logger>
+	<logger
+		name="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"
+		additivity="false">
+		<level value="WARN" />
+		<appender-ref ref="ERROR_APPENDER" />
+	</logger>
+	
+	 <root>
+        <level value="INFO" />
+        <appender-ref ref="APPENDER" />
+        <appender-ref ref="ERROR_APPENDER" />
+        <appender-ref ref="Console" />
+    </root>
+
+    
+</configuration>
